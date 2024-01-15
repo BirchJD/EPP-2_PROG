@@ -1,0 +1,65 @@
+//
+// DEVICE CODE FOR W27C512
+// 0           Always 0
+// 0 1 0       ALG2 Program algorytum
+// 0 0 0 1     0.05 ms pulse period
+// 0 0         0x Margin factor
+// 0 0         5.00 VDC Vcc
+// 0 1 1 0     12.00 VDC Vpp
+// 1           FF SKIP
+// 0 0 1       STD1 Pin Config
+// 0 1 1 0     64   X 8 KBIT
+//
+// DEVICE CODE = 0x210696
+//
+
+//
+// DEVICE CODE FOR TMM27512AD-20
+// 0           Always 0
+// 0 1 0       ALG2 Program algorytum
+//      0.1 ms pulse period
+// 0 0         0x Margin factor
+//          6.25 VDC Vcc
+//      12.75 VDC Vpp
+// 1           FF SKIP
+// 0 0 1       STD1 Pin Config
+// 0 1 1 0     64   X 8 KBIT
+//
+// DEVICE CODE = 0x222996
+//
+
+TOSHIBA TMM27512AD-20 512 kb 28 pins STD1 ALG2 12.75 6.25 0.10 ms 0x Yes 222996
+
+Select device:
+222996S
+
+
+Convert binary data file to Motorola S-Record file:
+./BinToMotorola FFFF ./NOMAD80.bin
+
+
+Empty check EEPROM:
+./EPP-2_PROG /dev/ttyUSB0 0000 FFFF E
+
+
+Write Motorola file to EEPROM:
+./EPP-2_PROG /dev/ttyUSB0 0000 FFFF W ./NOMAD80.ROM.HEX
+
+
+Verify Motorola file to EEPROM:
+./EPP-2_PROG /dev/ttyUSB0 0000 FFFF V ./NOMAD80.ROM.HEX
+
+
+
+
+rm ROM.BIN
+./AddBinToROM  ROM.BIN 0000 3FFF ../../Emulator/RUNTIME/TAPEFILE/CollecoVision/JUMPJUNR.ROM
+./AddBinToROM  ROM.BIN 4000 7FFF ../../Emulator/RUNTIME/TAPEFILE/CollecoVision/OILSWELL.ROM
+./AddBinToROM  ROM.BIN 8000 BFFF ../../Emulator/RUNTIME/TAPEFILE/CollecoVision/PEPPER-2.ROM
+./AddBinToROM  ROM.BIN C000 FFFF ../../Emulator/RUNTIME/TAPEFILE/CollecoVision/BCQUEST.ROM
+hexdump -C ROM.BIN | more
+./BinToMotorola FFFF ROM.BIN
+./EPP-2_PROG /dev/ttyUSB0 0000 FFFF E
+./EPP-2_PROG /dev/ttyUSB0 0000 FFFF W ROM.BIN.HEX
+./EPP-2_PROG /dev/ttyUSB0 0000 FFFF R > ROM.BIN.HEX.VFY
+diff ROM.BIN.HEX ROM.BIN.HEX.VFY

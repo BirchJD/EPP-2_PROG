@@ -1,0 +1,1204 @@
+
+                         EPP-1F/2 E(E)PROM
+
+                             PROGRAMMER
+
+                           COMMAND MANUAL
+
+
+
+                   ART / Programming Systems B.V.
+
+                            PS980714CM-E
+                               
+
+                   Homepage: http://www.artbv.nl
+
+                        E-mail: info@artbv.nl
+
+
+
+
+TABLE OF CONTENTS
+
+1.0  General product description
+1.1  Technical summary of the EPP-1F
+1.2  Technical summary of the EPP-2
+
+2.0  Connecting the programmer to a host
+
+3.0  Commands of the programmer
+3.1  Command description of the programmer
+3.2  How to use the commands of the programmer
+4.0  Serial communication & dataformat code
+4.1  Tables of the serial communication &
+     dataformat code
+4.2  How to assemble a serial communication &
+     dataformat code
+
+5.0  Selection code
+5.1  Tables of the selection code
+5.2  How to assemble a selection code
+
+6.0  Result codes
+6.1  List of error codes
+6.2  Definition of the sumcheck
+6.3  How to disassemble an error code
+
+7.0  Other practical features
+7.1  Using the Start, Last address, and 
+     Offset Commands
+
+8.0  EPP Software
+8.1  How to use PROMPROG.EXE
+8.2  How to use FFC.EXE
+8.3  How to use PromProg for Windows
+
+9.0  Trouble shooting
+
+     APPENDICES
+-A-  Terminal emulation programs
+-B-  Motorola formats
+-C-  PROM pin configurations                  (NOT INCLUDED)
+-D-  PROM programming algorithms              (NOT INCLUDED)
+-E-  Short command description                     (SEE 3.1)
+-F-  Result and Error codes                        (SEE 6.1)
+-G-  Serial communication & dataformat code
+-H-  Selection code                                (SEE 5.1)
+
+Due to disk space limitations Appendices C, D, E, F and H have 
+been left out. If you want to have a complete version of this 
+manual download the acrobat (*.PDF) version from our 
+website: http://www.artbv.nl.
+
+
+1.0  GENERAL PRODUCT DESCRIPTION
+
+The ART 'EPP-1F' PROM programmer programs all current E(E)-
+PROMs upto 1 Mbit and the EPP-2 PROM programmer programms all
+current E(E) PROMs upto 8 Mbit.
+
+The programmers command line interpreter enables the user to
+enter one or more single character commands at once. The
+execution begins after a <CR> (carriage return) entry.
+
+The unit can be operated by any host system equipped with an
+RS232 interface. No special communication protocol is required
+(any standard terminal emulation program, such as 'PROCOMM',
+should be adequate).
+
+Either 'Motorola.s1f', 'Motorola.s2f' or 'Motorola.s3f' files
+may be up- or downloaded from/to the programmmer.
+
+For the IBM PC/XT/AT/OS2 and compatible systems a menu driven
+program goes along with the unit. This program is called PROM-
+PROG.EXE. It also contains a database of many different types
+of devices. New types can be added by the user. A file conver-
+sion program, FFC.EXE, is also provided to convert several
+different formats. 
+
+
+1.1  TECHNICAL SUMMARY OF THE EPP-1F
+
+Operating Voltage        :         230 VAC (Europe) &
+                                   115 VAC (N. America)
+Power consumption        :         8 VA 
+Power Connector          :         "Euro" connector
+Fuses                    :         2 x 225 mA, slow blow
+Interface                :         RS232
+Connector                :         DB25 (female)
+Socket                   :         ZIF-28
+Memory                   :         up to 1 Mbit
+Data formats             :         Motorola s1f, s2f, s3f
+Baudrate                 :         300, 600, 1200, 2400, 4800,
+                                   9600, 19200
+                                   Default 9600
+Data bits                :         8 (bit 7 = 0)
+Parity                   :         None, Even, Odd
+                                   Default None
+Flow control             :         None, RTS/CTS, XON/XOFF
+                                   Default RTS/CTS
+Start/Stop bits          :         1
+Enclosure                :         Anodized aluminium
+Dimensions               :         171 x 110 x 63 [mm]
+Weight                   :         +/- 0,8 kg
+
+
+1.1  TECHNICAL SUMMARY OF THE EPP-2
+
+Operating Voltage        :         230 VAC (Europe) &
+                                   115 VAC (N. America)
+Power consumption        :         8 VA 
+Power Connector          :         "Euro" connector
+Fuses                    :         2 x 225 mA, slow blow
+Interface                :         RS232
+Connector                :         DB25 (female)
+Socket                   :         ZIF-32
+Memory                   :         up to 8 Mbit
+Data formats             :         Motorola s1f, s2f, s3f
+Baudrate                 :         300, 600, 1200, 2400, 4800,
+                                   9600, 19200
+                                   Default 9600
+Data bits                :         8 (bit 7 = 0)
+Parity                   :         None, Even, Odd
+                                   Default None
+Flow control             :         None, RTS/CTS, XON/XOFF
+                                   Default RTS/CTS
+Start/Stop bits          :         1
+Enclosure                :         Anodized aluminium
+Dimensions               :         171 x 110 x 63 [mm]
+Weight                   :         +/- 0,8 kg
+
+
+2.0  CONNECTING THE PROGRAMMER TO A HOST
+
+Follow the instructions below to connect the programmer to the
+host:                           
+
+*    Connect the programmer to the host system's RS232 inter-
+     face. If in doubt, check with Fig 2.1 or Fig. 2.2 before
+     proceeding, making your own 'flat cable' if necessary. 
+
+     FIGURE 2.1  Communication cable (25 pins connection)
+
+               Pin 1 = PGND   ---  PGND = Pin 1
+               Pin 2 = XMT    ->-  RCV  = Pin 2   
+               Pin 3 = RCV    -<-  XMT  = Pin 3
+   HOST(25P)   Pin 4 = RTS    ->-  CTS  = Pin 4   PROGRAMMER
+   =========   Pin 5 = CTS    -<-  RTS  = Pin 5   ==========
+               Pin 6 = DSR    -<-  HIGH = Pin 6
+               Pin 7 = GND    ---  GND  = Pin 7
+
+      FIGURE 2.2  Communication cable (9 pins connection)
+
+               Pin 3 = XMT    ->-  RCV  = Pin 2
+               Pin 2 = RCV    -<-  XMT  = Pin 3
+   HOST(9P)    Pin 7 = RTS    ->-  CTS  = Pin 4   PROGRAMMER
+   ========    Pin 8 = CTS    -<-  RTS  = Pin 5   ==========
+               Pin 6 = DSR    -<-  HIGH = Pin 6
+               Pin 5 = GND    ---  GND  = Pin 7
+
+*    Run your computer's terminal emulation program, setting
+     the communication port (frequently 'COM1:' for IBM PC's)
+     as follows (default):       
+
+     Baudrate            :    9600 baud
+     Start/Stop bits     :    1 bit
+     Data bits           :    8 bit
+     Flowcontrol         :    RTS/CTS
+     Parity              :    None
+
+*    Connect the PROGRAMMER to the mains (be sure a 3-conduc-
+     tor- grounded cable is used).    
+
+The monitor should display (980326 is just an example):      
+   ARTEPP-2, ver 980326             
+   *                                
+
+
+3.0  COMMANDS OF THE PROGRAMMER
+
+The programmer utilizes 16 commands. A command in the process
+of execution may be canceled by pressing the <ESC> key. The
+command syntax has been developed to enable the user to quic-
+kly operate the programmer without having to refer continually
+back to the instructions.             
+
+                TABLE 3.1  Summary of commands
+     <ESC>     Cancel present command
+     uX*       Define serial communication & dataformat mode
+      X        Display serial communication & dataformat mode
+     vP        Define E(E)PROM Start address
+      P        Display E(E)PROM Start address
+     vL        Define E(E)PROM Last address
+      L        Display E(E)PROM Last address
+     vO        Define Offset 
+      O        Display Offset
+      T*       Test    
+      R*       Read    
+      W*       Write   
+      V*       Verify  
+      G        Get result codes
+     wS        Set selection code
+      S        Display selection code
+
+      *        Error code will appear (should error result)
+               when using these commands
+      u        Serial communication & dataformat code (HEX)
+      v        Address (HEX)
+      w        Selection code (HEX)
+
+
+3.1  COMMAND DESCRIPTION OF THE PROGRAMMER
+
+<ESC>= Cancel present command    
+     Execution of a command is canceled, and the programmer
+     returns to initial state. Values set by the P, L, O, S
+     and X command remain unaffected.  
+
+uX   = Define serial communication & dataformat mode
+     'uX<CR>' selects a specific serial communication & data-
+     format code. If the code 'u' is not valid, an error will
+     be generated. Table G.1 (Appendix -G-) shows the structu-
+     re of the serial communication & dataformat code.   
+
+X    = Display serial communication & dataformat mode
+     'X<CR>' sends the selected serial communication & data-
+     format mode to the host. The default value is '0000h'.
+
+vP= Define E(E)PROM Start address
+     'vP<CR>' sets the E(E)PROM Start address. The value must
+     be lower than the defined 'highest address' or an 'Error'
+     message will occur when trying to execute the W, R, T or
+     V command, or if no E(E)PROM type has been selected.
+
+P    = Display E(E)PROM Start address
+     'P<CR>' sends the currently selected Start address to the
+     user interface. Default Start address is '000000h'.
+     'Error' message will occur if no E(E)PROM type has been
+     selected.                   
+
+vL   = Define E(E)PROM Last address
+     'vL<CR>' sets the E(E)PROM Last address. It should never
+     be lower than the 'Start address' or an 'Error' message
+     will occur whenever a W, R, T or V command is entered, or
+     if no E(E)PROM has been selected.
+
+L    = Display E(E)PROM Last address
+     'L<CR>' sends the currently selected high address to the
+     user interface. Default setting is the selected
+     E(E)PROM's highest address. An 'Error' will occur if no
+     E(E)PROM has been selected.              
+                                 
+vO   = Define Offset             
+     'vO<CR>' defines an Offset (which is subtracted from the
+     downloaded file address or added to the uploaded file
+     address) in order to relocate the file to the correct
+     E(E)PROM address. The default value is '00000000h'. This
+     value is also sent to the user interface if no E(E)PROM
+     has been selected.          
+                                 
+O    = Display Offset            
+     'O<CR>' sends the resident Offset value to the user
+     interface. The default value is '00000000h'.
+
+T    = Test                      
+     'T<CR>' verifies whether the E(E)PROM is 'empty' between
+     the defined Start and Last address values.
+R    = Read                      
+     'R<CR>' sends the contents of the selected E(E)PROM in
+     'Motorola.s1f', 'Motorola.s2f' or 'Motorola.s3f' format,
+     specified in the serial communication & dataformat mode,
+     to the user interface.                  
+
+W    = Write                     
+     'W<CR>' is entered and the programmer waits for the user
+     interface to download a 'Motorola.s1f', 'Motorola.s2f' or
+     'Motorola.s3f' formatted file which will be relocated
+     according to the P, L and O command settings. An 'Error
+     code' is sent to the user interface, should an error
+     occur or in case no E(E)PROM type has been selected.
+
+V= Verify                    
+     'V<CR>" is entered and the programmer waits for the user
+     interface to download its 'Motorola.s1f', 'Motorola.s2f'
+     or 'Motorola.s3f' format file (to the programmer).
+     This file will be checked with the code which is already
+     in the E(E)PROM. If the two do not match an 'Error'
+     message will occur. An 'Error' will also occur if no
+     E(E)PROM type has been selected.
+
+G    = Get result codes          
+     'G<CR>' sends three result codes to the user interface.
+     The first code represents the result (error) code. The
+     second code is the sumcheck of the range specified by the
+     P and L commands. The last code points to the next ad-
+     dress to be executed if no error or abort condition was
+     met. Else, it points to the error or abortion address.
+     The result codes can be found in Table F.1 
+     (Appendix -F-).             
+
+wS   = Set selection code      
+     'wS<CR>' sets the selection code (see Chapter 5.0). If
+     the code 'w' is not valid, an error code will be genera-
+     ted. 'w' consists of 3 bytes. Table H.1 (Appendix -H-)
+     shows the structure of the selection code. If only the
+     'R' (Read) command is to be utilized, only bits 0 through
+     6 must be selected. The remaining bit values 'don't
+     care'.
+
+S    = Display selection code
+     'S<CR>' sends the selection code to the user interface.
+     The default value is '000000h'.
+
+
+3.2. HOW TO USE THE COMMANDS OF THE PROGRAMMER
+
+The programmer's command line interpreter enables the user to
+enter single or even multiple commands. The execution begins
+after a <CR> entry, except when:         
+     * Using the <ESC> key.      
+     * Downloading files to the programmer.
+
+In the next example the data of a INTEL 27C512 EPROM will be
+copied to another INTEL 27C512 EPROM, but it could easily be a
+TOSHIBA TC57512AD EPROM or any other device which possesses
+adequate "empty" capacity.
+
+EXAMPLE 3.1  Copying data (of a INTEL 27C512)
+     All values in this example are in hexadecimal notation.
+     The '*' is the prompt of the programmer. All characters
+     after the prompt must be entered by the user.
+
+     Connect the programmer to the mains:                      
+       ARTEPP-2, ver 960326    
+     *222996S<CR>        :    Select INTEL 27C512 
+                              (see 'Device Selection Sheet' or
+                              Appendix -H-)
+     *S<CR>              :    Get selection code.
+     222996              :    Current selection code.
+     *PLO<CR>            :    Get Start, Last address and 
+                              Offset.
+     000000              :    Start address.
+     00FFFF              :    Last address.
+     00000000            :    Offset.
+     *1000P<CR>          :    Set Start address.
+     *1FFFL<CR>          :    Set Last address.
+     *1000O<CR>          :    Set Offset.
+     *PLO<CR>            :    Get Start, Last address and
+                              Offset.
+     001000              :    Start address.
+     001FFF              :    Last address.
+     00001000            :    Offset.
+     *0101X<CR>          :    Set transmitted dataformat to
+                              Motorola.s2f (see Appendix -G-);
+                              set communication speed to
+                              9600 Baud.
+     *X<CR>              :    Get current serial 
+                              communication & dataformat code.
+     0101                :    Current serial communication &
+                              data format code.
+                              -Insert the EPROM in the ZIF 
+                              socket and prepare your host for
+                              uploading-.
+     *R<CR>              :    Read the contents of the 
+                              EPROM. (Reading takes some
+                              time.)
+     *G<CR>              :    Get result codes.
+     0000                :    Error code, no errors.
+     00005AE9            :    Sumcheck of the contents.
+     00002000            :    Next address.
+                              -Insert new blank EPROM in ZIF
+                              socket-.
+     *T<CR>              :    Test whether EPROM is empty.
+                              (Testing takes some time.)
+     Error               :    EPROM is not empty.
+     *G<CR>              :    Get result codes.
+     0080                :    Error code, EPROM is not empty.
+     000022C0            :    Sumcheck invalid.
+     0000145D            :    Address of the 'not empty'
+                              memory cell.
+     *0P<CR>             :    Set new Start address.
+     *FFFFL<CR>          :    Set new Last address.
+     *T<CR>              :    Test whether EPROM is empty.
+                              (Testing takes some time.)
+     *1000O<CR>          :    No errors, EPROM range is empty.
+                              Set Offset (see note).
+     *W<CR>              :    Write the contents of the file
+                              to the EPROM. (Writing takes
+                              some time.) 
+                              -Prepare your host for 
+                              downloading-.
+     *G<CR>              :    Get result codes.
+     0000                :    No error codes, EPROM contains
+                              the new contents.
+     00005AE9            :    Sumcheck of the new EPROM.
+     00001000            :    Next address.
+     *X<CR>              :    Get serial communication & data-
+                              format code.
+     0501                :    Received dataformat was 
+                              Motorola.s2f (see Appendix -G-).
+     *V<CR>              :    Verify the contents of the file
+                              with the EPROM. (Verifying takes
+                              some time.) 
+                              -Prepare your host for 
+                              downloading-.
+
+     *                   :    If no error is generated the
+                              contents of the EPROM is the
+                              same as the file.
+
+Note:     The Start address of the uploaded file is 01000h,
+          the Last address of the file is 01FFFh. The Start
+          address of the EPROM is 000000h and the Last address
+          is 000FFFh. So you have to use an Offset of 0001000h
+          to relocate the contents of the file to the EPROM
+          range.
+
+
+4.0  SERIAL COMMUNICATION & DATAFORMAT CODE
+
+The serial communication & dataformat code allows the user to
+select a specific communication speed, flow control, vertical
+redundancy check or data format. 
+
+4.1  TABLES OF THE SERIAL COMMUNICATION & DATAFORMAT CODE
+
+Bits 0 through 2 allow you to select a specific communication
+speed (see Table 4.1).                
+
+                TABLE 4.1  Communication speed
+
+          BIT 0-2 ---------------> 0 0 0   19200 BAUD
+                                   0 0 1    9600 BAUD-
+                                                 (Default)
+                                   0 1 0    4800 BAUD
+                                   0 1 1    2400 BAUD
+                                   1 0 0    1200 BAUD
+                                   1 0 1     600 BAUD
+                                   1 1 0     300 BAUD
+                                   1 1 1   INVALID
+
+Bit 3 is not used and must be set false (logical '0').
+
+Bits 4 and 5 are used for the vertical redundancy check (pari-
+ty) (see Table 4.2).                  
+
+                       TABLE 4.2  Parity
+
+          BIT 4-5 --------------------> 0 0  NONE
+                                             (Default)
+                                        0 1  ODD
+                                        1 0  EVEN
+                                        1 1  INVALID
+
+Bits 6 and 7 are used to select a specific flow control (see
+Table 4.3).                           
+
+                    TABLE 4.3  Flow control
+
+          BIT 6-7 --------------------> 0 0  RTS/CTS
+                                             (Default)
+                                        0 1  XON/XOFF
+                                        1 0  NONE
+                                        1 1  INVALID
+
+Bits 8 and 9 allow you to select a dataformat (see Table 4.4).
+The selected format will be sent to the host when using the R
+(Read) command.                       
+
+Note:     Be careful when using the 'Motorola.s1f' format. The
+          maximum memory size in this format is 64 x 8 kbits
+          data and the memory size of the largest E(E)PROM,
+          which can be programmed by the EPP-1F is 128 x 8
+          kbits data and by the EPP-2 is 1024 x 8 kbits data.
+          We advise you to use the 'Motorola.s3f' format.      
+
+                TABLE 4.4  Data transmit format
+
+          BIT 8-9 --------------------> 0 0  MOTOROLA.S3F
+                                        0 1  MOTOROLA.S2F
+                                        1 0  MOTOROLA.S1F
+                                        1 1  INVALID
+
+Bits 10 and 11 cannot be set by the user. The bits will be set
+by the programmer after downloading a file to the programmer
+by using the W (Write) or V (Verify) command. The programmer
+detects automatically which dataformat has been downloaded to
+the programmer. Bits 10 and 11 represent the last downloaded
+dataformat (see Table 4.5).                           
+
+                TABLE 4.5  Data receive format
+
+          BIT 10-11 ------------------> 0 0  MOTOROLA.S3F
+                                        0 1  MOTOROLA.S2F
+                                        1 0  MOTOROLA.S1F
+                                        1 1  INVALID
+
+Bits 12 through 15 are not used and must be set false.
+
+
+4.2  HOW TO ASSEMBLE A SERIAL COMMUNICATION & DATAFORMAT CODE
+
+Suppose you have a host system and you want to work with the
+following communication protocol:
+               Baudrate       :    1200 BAUD
+               Flowcontrol    :    XON/XOFF
+               Parity         :    EVEN
+               Data format    :    S2
+
+The following serial communication & dataformat code has now
+been established (check with Table G.1, Appendix -G-):
+
+     0 0 0 0          0 0 0 1          0 1 1 0          0 1 0 0
+ 0*8+0*4+0*2+0*1  0*8+0*4+0*2+1*1  0*8+1*4+1*2+0*1  0*8+1*4+0*2+0*1  
+        =                =                =                =
+        0                1                6                4
+
+The serial communication and dataformat code = 0164h
+
+Follow the next example to install the programmer to this
+protocol.  
+
+EXAMPLE 4.1  Installing the programmmer to a protocol
+
+     Before proceeding, set the baudrate in your host system
+     to 9600 and the parity to none.
+     The values in this example are in hexadecimal notation.
+     The '*' is the prompt of the programmer. All characters 
+     after the prompt must be entered by the user.             
+
+     Connect the programmer to the mains:
+       ARTEPP-2, ver 980326        
+     *0164X<CR>               Set serial communication &
+                              dataformat.
+     $<CR>                    Change the host system to the
+                              protocol.
+     *<CR>                    Prompt appears, programmer ac-
+                              cepts your protocol.
+     *X<CR>                   Get serial communication and
+                              dataformat code.
+     0164                     Serial communication & data-
+                              format code.
+     *                           
+
+Note:     The $ character, returned by the system, could be 
+          any other character.                                
+
+
+5.0  SELECTION CODE                                          
+
+The selection code allows you to install the programmer for a 
+specific E(E)PROM type. For reading or verifying the E(E)PROM
+only bits 0 through 6 must be selected. The remaining bit
+values 'don't care'. Use the correct data sheet of the
+E(E)PROM for assembling the selection code. A wrong selection
+code can damage your E(E)PROM.   
+
+5.1  TABLES OF THE SELECTION CODE    
+
+Bits 0 through 3 allow the user to specify the size of the
+E(E)PROM which will be read, tested, verified or programmed
+(see Table 5.1).                   
+
+TABLE 5.1  E(E)PROM size
+ 
+         BIT 0-3 ---------------> 0 0 0 0   INVALID
+                                  0 0 0 1   2    X 8 KBIT
+                                  0 0 1 0   4    X 8 KBIT
+                                  0 0 1 1   8    X 8 KBIT
+                                  0 1 0 0   16   X 8 KBIT
+                                  0 1 0 1   32   X 8 KBIT
+                                  0 1 1 0   64   X 8 KBIT
+                                  0 1 1 1   128  X 8 KBIT
+                                  1 0 0 0   256  X 8 KBIT
+                                  1 0 0 1   512  X 8 KBIT
+                                  1 0 1 0   1024 X 8 KBIT
+                                  . . . .   INVALID
+
+Bits 4 through 6 define the pin configuration of the current
+E(E)PROM (see Table 5.2). Compare your E(E)PROM type with the
+pin configurations listed in Appendix -C-.
+
+                 TABLE 5.2  Pin configuration
+
+          BIT 4-6 -----------------> 0 0 0   INVALID
+                                     0 0 1   STD1
+                                     0 1 0   STD2
+                                     0 1 1   STD3
+                                     1 0 0   STD4
+                                     1 0 1   STD5 (27C011/27C513)
+                                     . . .   OPTIONAL
+
+Bit 7 allows the user to set the FF SKIP (see Table 5.3). When
+FF SKIP is false all memory locations of the E(E)PROM will be
+programmed. If FF SKIP is true, only the memory locations that
+have to contain data not equal to FFh, will be programmed.
+We advise you to set FF SKIP false when programming EEPROMs
+and true when programming PROMs or EPROMs.
+
+                 TABLE 5.3  FF Skip
+
+          BIT 7 -----------------------> 0   NO FF SKIP     
+                                         1   FF SKIP
+
+Bits 8 through 11 specify the program voltage, Vpp (see Table
+5.4). The programmer applies the programming voltage
+only while executing the W (Write) command.     
+          TABLE 5.4  Program voltage Vpp
+                                    
+         BIT 8-11 þ-------------þ 0 0 0 0    5.00 VDC
+                                  0 0 0 1    6.00 VDC
+                                  0 0 1 0    6.25 VDC
+                                  0 0 1 1    6.50 VDC
+                                  0 1 0 0    6.75 VDC
+                                  0 1 0 1    7.00 VDC
+                                  0 1 1 0   12.00 VDC
+                                  0 1 1 1   12.25 VDC
+                                  1 0 0 0   12.50 VDC
+                                  1 0 0 1   12.75 VDC
+                                  1 0 1 0   13.00 VDC
+                                  1 0 1 1   20.00 VDC
+                                  1 1 0 0   21.00 VDC
+                                  1 1 0 1   21.50 VDC
+                                  1 1 1 0   22.50 VDC
+                                  1 1 1 1   25.00 VDC
+
+Bits 12 and 13 allow the user to select the supply voltage
+while programming E(E)PROM, Vce (see Table 5.5). The
+programmer applies this voltage only while executing the W
+(Write) command. In all other cases this voltage is set to 5V.
+
+                 TABLE 5.5  Vce while programming E(E)PROM
+                                                             
+         BIT 12-13 -----------------> 0 0    5.00 VDC        
+                                      0 1    6.00 VDC        
+                                      1 0    6.25 VDC        
+                                      1 1    6.50 VDC        
+
+Bits 14 and 15 set the margin factor (see Table 5.6). The      
+Margin factor applies to the additional programming pulse (see 
+Appendix -D-).                       
+
+                   TABLE 5.6  Margin factor
+
+          BIT 14-15 -----------------> 0 0   0 x
+                                       0 1   1 x
+                                       1 0   3 x
+                                       1 1   4 x
+
+Bits 16 through 19 allow the user to set the pulse time during
+programming (see Table 5.7). The EPP-1F/2 applies this pulse
+or these pulses when programming an E(E)PROM. Use the data
+sheet of the E(E)PROM and Appendix -D- to select the correct
+pulse time.                                
+
+                     TABLE 5.7  Pulse time
+
+          BIT 16-19 -------------> 0 0 0 0   INVALID
+                                   0 0 0 1    0.05 ms
+                                   0 0 1 0    0.10 ms 
+                                   0 0 1 1    0.20 ms 
+                                   0 1 0 0    0.25 ms 
+                                   0 1 0 1    0.50 ms 
+                                   0 1 1 0    1.00 ms 
+                                   0 1 1 1    2.50 ms 
+                                   1 0 0 0    5.00 ms 
+                                   1 0 0 1   10.00 ms 
+                                   1 0 1 0   15.00 ms 
+                                   1 0 1 1   20.00 ms 
+                                   1 1 0 0   25.00 ms 
+                                   1 1 0 1   35.00 ms 
+                                   1 1 1 0   45.00 ms 
+                                   1 1 1 1   50.00 ms 
+
+Bits 20 through 22 select the programming algorithm (see Table
+5.8). Check with Appendix -D- for the correct algorithm.
+
+               TABLE 5.8  Programming algorithms
+
+          BIT 20-22 ---------------> 0 0 0   INVALID
+                                     0 0 1   ALG1
+                                     0 1 0   ALG2
+                                     . . .   INVALID
+
+Bit 23 is not used and must be set false.
+
+
+5.2  HOW TO ASSEMBLE A SELECTION CODE
+
+A INTEL 27C512 EPROM wil be used in the following example.
+
+EXAMPLE 5.1  Assembling a selection code
+
+    For the INTEL 27C512 EPROM the correct selection is:
+    Size        : 64 x 8 bit     Pin configuration : STD1
+    FF Skip     : yes            Program voltage   : 12.5 VDC
+    Vce program : 6.00 VDC       Margin factor     : 3 x
+    Pulse time  : 1.00 ms        Prog. algorithm   : ALG2
+
+    The following selection code has now been established 
+    (check with Table H.1, Appendix -H-):
+
+        0 0 1 0          0 1 1 0          1 0 0 1
+    0*8+0*4+1*2+0*1  0*8+1*4+1*2+0*1  1*8+0*4+0*2+1*1
+           =                =                =
+           2                6                9
+
+        1 0 0 0          1 0 0 1          0 1 1 0 
+    1*8+0*4+0*2+0*1  1*8+0*4+0*2+1*1  0*8+1*4+1*2+0*1
+           =                =                =
+           8                9                6
+
+    Selection code INTEL 27C512 = 269896h
+
+
+6.0  RESULT CODES 
+
+The EPP-1F/2 utilizes three codes which represent its state.
+The result codes will be displayed after the G (Get result
+code) command. The first code represents the error code. If no
+error is detected the error code is set to '0000h'. The second
+code represents the sumcheck of the E(E)PROM within the range
+specified by the P (Start address) and L (Last address) com-
+mands. The last code represents the address of the aborted
+command or detected error. If no error is detected this ad-
+dress is set to the next address, which is the last address
+plus one.
+
+EXAMPLE 6.1  Result codes
+
+     The values in this example are in hexadecimal notation.
+     The '*' is the prompt of the EPP-1F/2. All characters af-
+     ter the prompt must be entered by the use                 
+
+     Connect the EPP-1F/2 to the mains:
+
+       ARTEPP-2, ver 980326
+     *269896S<CR>        :    Select INTEL 27C512 (see
+                              'Device Selection Sheet' or
+                              Appendix -H-).
+     *S<CR>              :    Get selection code.
+     269896              :    Selection code.
+     *PLO<CR>            :    Get Start, Last address and
+                              Offset.
+     000000              :    Start address.
+     00FFFF              :    Last address.
+     00000000            :    Offset.
+     *1000K<CR>          :    Set Start address.
+     Error               :    Error detected.
+     *G<CR>              :    Get result codes.
+     0010                :    Error state, command error (see
+                              Paragraph 6.1).
+     00000000            :    Sumcheck, not valid.
+     00000000            :    Address of the terminated
+                              command.
+     *
+
+6.1  LIST OF ERROR CODES
+
+The error code can consist of fifteen errors. Each bit in the
+error code represents a specific error listed in Table 6.1. It
+is possible to get more than one error. The error code is set
+to '0000h' at the beginning of the execution of the T (Test),
+R (Read) or V (Verify) command.
+
+               TABLE 6.1  Result (error) codes
+
+/-------------------------------------------------------------\
+| Bits   | Explanation      | Cause                           |
+|-------------------------------------------------------------|
+| Bit 0  | Bit cannot be    | E(E)PROM is damaged or the      |
+|        | programmed.      | selection code is wrong.        |
+|        |                  |                                 |
+| Bit 1  | Illegal bit      | Bit is programmed while it      |
+|        | error.           | should not have been.           |
+|        |                  | E(E)PROM was not totally        |
+|        |                  | erased or is damaged.           |
+|        |                  |                                 |
+| Bit 2  | Hex digit error. | A downloaded digit is outside   |
+|        |                  | HEX range values 0..9 or A..F.  |
+|        |                  | Check downloaded file.          |
+|        |                  |                                 |
+| Bit 3  | Address range    | Address is not valid, out of    |
+|        | error.           | range. Check range.             |
+|        |                  |                                 |
+| Bit 4  | Command error.   | Illegal command. Trying to read,|
+|        |                  | write etc. while no valid       |
+|        |                  | selection code was entered.     |
+|        |                  |                                 |
+| Bit 5  | HEX check error. | Sumcheck of a downloaded record.|
+|        |                  |                                 |
+| Bit 6  | Abort flag.      | Sets after use of <ESC> command.|
+|        |                  |                                 |
+| Bit 7  | Not empty flag.  | E(E)PROM not empty within the   |
+|        |                  | defined range.                  |
+|        |                  |                                 |
+| Bit 8  | Format error.    | An error has occurred during the|
+|        |                  | conversion of 'Motorola.s1f',   |
+|        |                  | 'Motorola.s2f' or 'Motorola.s3f'|
+|        |                  | format.                         |
+|        |                  |                                 |
+| Bit 9  | Parity error.    | Parity error detected in        |
+|        |                  | received data.                  |
+|        |                  |                                 |
+| Bit 10 | Input overflow   | Input buffer could not capture  |
+|        | error.           | all incoming data.              |
+|        |                  | Check flow control.             |
+|        |                  |                                 |
+| Bit 11 | System error.    | Hardware problem, reset system, |
+|        |                  | by disconnecting mains.         |
+|        |                  |                                 |
+| Bit 12 | Selection error. | Illegal selection code. Assemble|
+|        |                  | correct selection code.         |
+|        |                  |                                 |
+| Bit 13 | Vcc error.       | Problem detected in Vcc circuit |
+|        |                  | hardware. Check insertion of ic |
+|        |                  | in the socket.                  |
+|        |                  |                                 |
+| Bit 14 | Vpp error.       | Problem detected in Vpp circuit |
+|        |                  | hardware. Check insertion of ic |
+|        |                  | in the socket.                  |
+|        |                  |                                 |
+| Bit 15 | Short circuit    | Overcurrent problem detected    |
+|        | error.           | Check insertion of ic in the    |
+|        |                  | socket.                         |
+|        |                  |                                 |
+\-------------------------------------------------------------/
+
+
+6.2  DEFINITION OF SUMCHECK                                  
+
+The sumcheck is the binary sum of the preceding bytes in the 
+range, given by the P (Start address) and L (Last address)   
+command, in hexadecimal notation.
+
+6.3  HOW TO DISASSEMBLE AN ERROR CODE
+
+In Example 6.1 an error was detected. The error code consists
+only of one error, a command error. In the next example (Exam-
+ple 6.2) the error code consists of more than one error. 
+
+EXAMPLE 6.2  Disassembling error codes
+
+    The values in this example are in hexadecimal notation.
+    The '*' is the prompt of the EPP-1F/2. All characters
+    after the prompt must be entered by the user. 
+
+    *W<CR>              Write the contents of the file to the
+                        E(E)PROM. (Writing takes some time.)
+                        -Prepare your host for downloading-.
+    Error               Error detected while writing.
+    *G<CR>              Get result codes.
+    0604                Error code.
+    00001E4B            Sumcheck, invalid.
+    000015E6            Address of the detected errors.
+    * 
+
+    Disassembling the error code 0604h results in:
+
+    Bit  0 -  3 is 4h
+    Bit  4 -  7 is 0h, all bits are false, no errors
+    Bit  8 - 11 is 6h
+    Bit 12 - 15 is 0h, all bits are false, no errors
+
+    Disassembling bits 0 through 3 results in:
+      4h = 0*8 + 1*4 + 0*2 + 0*1 
+           Bit 0 is False, no error
+           Bit 1 is False, no error
+           Bit 2 is True, Hex digit error
+           Bit 3 is False, no error
+
+    Disassembling bits 8 through 11 results in:
+
+      6h = 0*8 + 1*4 + 1*2 + 0*1 
+           Bit  8 is False, no error
+           Bit  9 is True, Parity error
+           Bit 10 is True, Input overflow error
+           Bit 11 is False, no error
+
+    In this case there is probably a problem with your
+    communication protocol.
+
+
+7.0  OTHER PRACTICAL FEATURES
+
+The EPP-1F/2 supports the Motorola.s1f, Motorola.s2f and 
+Motorola.s3f formats (see Appendix -B-). If you want to upload
+or download to or from those formats you have to use the
+Offset command. The Offset command allows you to relocate the
+addresses from the file to the E(E)PROM or from the E(E)PROM
+to the file.
+
+The address range of the formats is given in Table 7.1.
+
+                TABLE 7.1  Format address range
+
+          FORMAT    START ADDRESS  LAST ADDRESS   DATASIZE
+          S1F           0000h          FFFFh      64   Kbyte
+          S2F         000000h        FFFFFFh      16   Mbyte
+          S3F       00000000h      FFFFFFFFh       4.2 Gbyte
+
+As you will see the Motorola.s1f cannot hold the contents of
+an E(E)PROM larger than 512 kbits (64 kbytes x 8). So if your
+E(E)PROM memory size is larger you will have to use the Moto-
+rola.s2f or Motorola.s3f format. It would be best to use the
+Motorola.s3f format always.
+
+
+7.1  USING THE START, LAST ADDRESS AND OFFSET COMMANDS
+
+When using the R (Read) command the Offset will be added to
+the E(E)PROM address and written to the file address (see
+Example 7.1).
+
+EXAMPLE 7.1
+              E(E)PROM  -  START    +  OFFSET   =  FILE
+              ADDRESSES    ADDRESS                 ADDRESSES
+    Begin     001000h   - 001000h   + 00010200h = 010200h
+    address      |                                   |
+                 |                                   |
+                 |                                   |
+                 |                                   |
+    End       001FFFh   - 001000h   + 00010200h = 0111FFh
+    address                                          
+
+When using the W (Write) and V (Verify) commands the Offset
+will be subtracted from the file addresses and written to or
+verified with the E(E)PROM addresses (see Example 7.2).
+
+EXAMPLE 7.2
+              FILE      +  START    - OFFSET    =  E(E)PROM
+              ADDRESSES    ADDRESS                 ADDRESSES
+    Begin     011200h   + 001000h   - 00010200h = 001000h
+    address      |                                   |
+                 |                                   |
+                 |                                   |
+                 |                                   |
+    End       0111FFh   + 001000h   - 00010200h = 001FFFh
+    address 
+
+
+8.0  EPP SOFTWARE 
+
+ART / Programming Systems B.V. ships the EPP programmers with
+two disks containing the EPP software. Table 8.1 shows which 
+software is included and where is is to be found on the disks
+
+              TABLE 8.1  EPP software
+  Operating
+  System        Disk  Directory      Description
+   DOS           1     \DOS\PROMPROG  Menu driven software for
+                                      controlling your programmer
+                 1     \DOS\FFC       Converter tool to convert
+                                      different file formats to
+                                      an other file format
+   Windows 3.1x  1/2   SETUP.EXE	  Copy the contents of disk 1
+                                      and disk 2 to a temporary 
+                                      directory and run SETUP.EXE
+                                      to install PromProg for 
+                                      Windows
+   Windows 95    1/2   SETUP.EXE      Run SETUP.EXE from disk 1 to
+                                      install PromProg for Windows
+   Windows 98    1/2   SETUP.EXE      Run SETUP.EXE from disk 1 to
+                                      install PromProg for Windows
+   Windows NT    NO SOFTWARE AVAILABLE
+
+                                      
+8.1  HOW TO USE PROMPROG.EXE
+
+PROMPROG.EXE allows you to generate the commands of the EPP--
+1F/2 in a very easy way. PROMPROG.EXE uses windows for dis-
+playing the commands, error warnings and the contents of the
+E(E)PROM. The software comes with a database containing the
+most current E(E)PROM types.
+
+Type:          A:\PROMPROG\PROMPROG          default com1:
+               A:\PROMPROG\PROMPROG /COM1:   using com1:
+               A:\PROMPROG\PROMPROG /COM2:   using com2:
+to start PROMPROG.EXE.
+
+
+8.2  HOW TO USE FFC.EXE
+
+FFC.EXE (FILE FORMAT CONVERTER) allows you to convert several
+dataformats generated by your application into a Motorola for-
+mat.
+
+Read the README.TXT file for more information on FFC.
+
+Type:          A:\FFC\FFC[source.ext][destination.ext][offset]
+to convert a format into another format.
+
+
+8.3  PROMPROG FOR WINDOWS 3.1x/95/98
+
+PromProg for Windows is a program to control your programmer
+using a Windows enviroment. FFC is included within th file 
+handling of PromProg for Windows.
+
+Be sure you turn of the FIFO buffer of the used comport when
+running PromProg in Windows 95 or 98. You have to do this 
+yourself in the Control Panel:
+  System, Device Manager, Ports, COM X, Port Settings, Advanced
+   Disable 'Use FIFO buffers'
+
+
+9.0  TROUBLE SHOOTING
+
+IF YOU CAN READ BUT NOT WRITE THE E(E)PROM CORRECTLY THEN:
+1.   Check the selection code with the data sheet of the
+     E(E)PROM used. Correct selection code and/or try an other
+     E(E)PROM.
+2.   Check whether the Start, Last address and Offset values
+     are within the range of the selected device.
+3.   Ensure that the file being downloaded does not contain
+     unauthorized characters according to the Motorola file
+     formats standards (see Appendix -B-).
+4.   Check the communication cable between your host and the
+     EPP-1F/2.
+5.   Does your computer utilize correct hardware flow control?
+     It may not respond quickly enough to the CTS input and/or
+     XOFF command and may transmit one or more characters too
+     many before transmission is finished. Try using another
+     communication port or slow down the transmission speed by
+     software on your computer or using the X command (See
+     Chapter 4.0).
+6.   Check the FIFO buffers when using Windows 95/98 (See 
+     paragraph 8.3)
+
+IF YOU CAN WRITE BUT NOT READ THE E(E)PROM CORRECTLY THEN: 
+1.   Check the communication cable between your host and the
+     EPP-1F/2.
+2.   Check for correct flow control.
+3.   Check the FIFO buffers when using Windows 95/98 (See 
+     paragraph 8.3)
+
+IF THERE IS NO COMMUNICATION AT ALL THEN:
+1.   Check the communication cable between your host and the
+     EPP-1F/2.
+2.   Check whether the communication port is functioning.
+3.   Check fuses inside the EPP-1F/2 (disconnect power first).
+4.   Test the EPP-1F/2 on an other computer. If it functions,
+     contact your computer dealer. If not, contact your EPP--
+     1F/2 dealer.
+
+
+                        APPENDIX -A-
+
+
+                TERMINAL EMULATION PROGRAMS
+
+Any terminal emulation program using the RS232 communication
+port of the host can be used to operate the EPP-1F/2. The
+emulation program should also be able to download files from a
+disk to the RS232 port (sending Motorola s1f, s2f or s3f code
+files), capture incoming data (upload) and store them on a
+disk medium.
+
+When using a standard terminal emulation program, keep the
+following in mind:
+
+Upload    After preparing your host system for the upload you
+          may give the (R) Read command to actually upload the
+          contents of an E(E)PROM. After finishing you will
+          have a file on disk containing this contents. There
+          will be an 'R' command at the beginning of this file
+          while the '*' (coming from the EPP-1F/2) will be at
+          the end (see note below). 
+
+Download  First prepare the EPP-1F/2 for receiving a Motorola
+          file from your host system. After giving the W
+          (Write) command download the file through the termi-
+          nal emulation program. 
+
+          Note:     Use your editor to remove the 'R' command
+                    and the '*' first before downloading a
+                    previous uploaded file, as the EPP-1F/2
+                    will not recognize these characters, which
+                    would result in an error.
+
+
+                        APPENDIX -B-
+
+
+                      MOTOROLA FORMATS
+
+Motorola has developed three data formats which are used by
+the EPP-1F/2. These three formats are described in this Appen-
+dix.
+
+Example of a Motorola.s1f format:
+S12310A05758595A0D0A616263646566676........576794
+S12310C00D0A303132333435363738390D0........D3D522
+S11710E00D0A7B7D5B5D3A2............E20D0A03
+S90310F419
+
+Example of a Motorola.s2f format:
+S2241020B05758595A0D0A616263646566676........576762
+S2241020D00D0A303132333435363738390D0........D3D5F0
+S2181020F00D0A7B7D5B5D3A2............E20D0AD1
+S804102104C6
+
+Example of a Motorola.s3f format:
+S325102030C05758595A0D0A616263646566676........576721
+S325102030E00D0A303132333435363738390D0........D3D5AF
+S319102031000D0A7B7D5B5D3A2............E20D0A8F
+S7051020311485
+
+Explanation of the codes:
+BC   -    Byte count in hexadecimal notation. The number of
+          databytes plus the address databytes and sumcheck
+          databyte.
+AA   -    Address of the first databyte in the string in hexa-
+          decimal notation.
+HH   -    Databyte in hexadecimal notation. '..' = n x HH.
+          (Example: 01001010b = 4Ah)
+CC   -    Sumcheck. One's complement (complement of '1') of
+          the binary sum of preceding bytes (including byte
+          count, address and databytes) in hexadecimal notati-
+          on.
+
+The definition of the Motorola.s1f records is as follows:
+     DATA record         :    S1BCAAAAHHHHHHHH..HHHHHHHHCC
+     END OF FILE record  :    S903AAAACC
+
+The definition of the Motorola.s2f records is as follows:
+     DATA record         :    S2BCAAAAAAHHHHHHHH..HHHHHHHHCC
+     END OF FILE record  :    S804AAAAAACC
+
+The definition of the Motorola.s3f records is as follows:
+     DATA record         :    S3BCAAAAAAAAHHHHHHHH..HHHHHHHHCC
+     END OF FILE record  :    S705AAAAAAAACC
+
+Example of sumcheck:     S1051020131485
+
+05h + 10h + 20h + 13h + 14h + 85h = 00h (one's complement)
+
+So the sumcheck of this record is : 85h
+
+
+                           APPENDIX -G-
+
+    TABLE G.1  Serial communication & data format code Bits
+
+          15---12        11----8        7-----4        3-----0
+
+          0 0 0 0        Y Y X X        X X X X        X X X X
+
+          X = INITIAL CODE                                  
+          Y = RETURN CODE                                   
+          0 = FALSE                                         
+          1 = TRUE                                          
+          . = DON'T CARE                                    
+
+          BIT 0-2 ---------------> 0 0 0   19200 BAUD
+                                   0 0 1    9600 BAUD (Default)
+                                   0 1 0    4800 BAUD
+                                   0 1 1    2400 BAUD
+                                   1 0 0    1200 BAUD
+                                   1 0 1     600 BAUD
+                                   1 1 0     300 BAUD
+                                   1 1 1   INVALID
+          BIT  3 NOT USED -----------> 0   VALID
+                                       1   INVALID
+          BIT  4- 5 PARITY --------> 0 0   NONE
+                                     0 1   ODD
+                                     1 0   EVEN
+                                     1 1   INVALID
+          BIT  6- 7 FLOW CONTROL --> 0 0   RTS/CTS
+                                     0 1   XON/XOFF
+                                     1 0   NONE
+                                     1 1   INVALID
+          BIT  8- 9
+            DATA TRANSMIT FORMAT --> 0 0   MOTOROLA.S3F
+                                     0 1   MOTOROLA.S2F (INITIAL)
+                                     1 0   MOTOROLA.S1F
+                                     1 1   INVALID
+          BIT 10-11
+            DATA RECEIVE FORMAT ---> 0 0   MOTOROLA.S3F
+                                     0 1   MOTOROLA.S2F (RETURN CODE)
+                                     1 0   MOTOROLA.S1F
+                                     1 1   INVALID
+          BIT 12-15 NOT USED --> 0 0 0 0   VALID
+                                 . . . .   INVALID
